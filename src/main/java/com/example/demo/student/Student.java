@@ -2,6 +2,8 @@ package com.example.demo.student;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -23,7 +25,7 @@ public class Student
             name = "id",
             nullable = false
     )
-    private String id;
+    private Long id;
 
     @Column(
             name = "name",
@@ -43,15 +45,22 @@ public class Student
             nullable = false
     )
     //private LocalDate dob;
-    private String age;
+    @Transient
+    private int age;
 
-    public Student(String id, String name, String email, String age)
+    @Column(
+            name = "yob",
+            nullable = false
+    )
+    private int yob;
+
+    public Student(Long id, String name, String email, int yob)
     {
         this.id=id;
         this.name=name;
         this.email=email;
         //this.dob=dob;
-        this.age=age;
+        this.yob=yob;
     }
 
     public Student()
@@ -60,11 +69,11 @@ public class Student
 
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,22 +101,33 @@ public class Student
         this.dob = dob;
     }*/
 
-    public String getAge() {
-        return age;
+    public int getAge() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int a = year - this.yob;
+        return a;
+        //return Period.between(this.yob, year);
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
+    public int getYob() {
+        return yob;
+    }
+
+    public void setYob(int yob) {
+        this.yob = yob;
+    }
+
     @Override
-    public String toString() // to display data
-    {
+    public String toString() {
         return "Student{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", yob=" + yob +
                 '}';
     }
 }
